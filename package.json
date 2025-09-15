@@ -28,16 +28,16 @@
     "react-router",
     "typescript"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "Mehmet Baris Yaman",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/react-navigation-guard.git"
+    "url": "https://github.com/mehmetbarisyaman/React-Navigation-Guard.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/react-navigation-guard/issues"
+    "url": "https://github.com/mehmetbarisyaman/React-Navigation-Guard/issues"
   },
-  "homepage": "https://github.com/yourusername/react-navigation-guard#readme",
+  "homepage": "https://github.com/mehmetbarisyaman/React-Navigation-Guard#readme",
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-router-dom": ">=5.0.0"
