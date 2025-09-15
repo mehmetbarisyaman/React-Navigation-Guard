@@ -28,8 +28,8 @@ pnpm add react-navigation-guard
 ## Prerequisites
 
 This package requires:
-- React 16.8.0 or higher (for hooks support)
-- react-router-dom 5.0.0 or higher
+- React 16.8.0 or higher (for hooks support) - **✅ React 19 compatible**
+- react-router-dom 6.0.0 or higher
 
 ## Basic Usage
 
@@ -240,6 +240,13 @@ import type {
   NavigationGuardReturn 
 } from 'react-navigation-guard';
 ```
+
+## Compatibility
+
+- ✅ **React 16.8+** - Full support including latest React 19
+- ✅ **React Router 6+** - Optimized for modern React Router
+- ✅ **TypeScript 5+** - Complete type safety
+- ✅ **Node.js 14+** - Modern build environment
 
 ## Best Practices
 
