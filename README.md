@@ -1,5 +1,10 @@
 # React Navigation Guard
 
+[![npm version](https://badge.fury.io/js/@mehmetbarisyaman%2Freact-navigation-guard.svg)](https://badge.fury.io/js/@mehmetbarisyaman%2Freact-navigation-guard)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB)](https://reactjs.org/)
+
 A React hook that prevents navigation when there are unsaved changes, providing a seamless user experience by showing confirmation dialogs before leaving pages with unsaved data.
 
 ## Features
@@ -14,28 +19,102 @@ A React hook that prevents navigation when there are unsaved changes, providing 
 ## Installation
 
 ```bash
-npm install react-navigation-guard
+npm install @mehmetbarisyaman/react-navigation-guard
 ```
 
 ```bash
-yarn add react-navigation-guard
+yarn add @mehmetbarisyaman/react-navigation-guard
 ```
 
 ```bash
-pnpm add react-navigation-guard
+pnpm add @mehmetbarisyaman/react-navigation-guard
+```
+
+## Quick Start
+
+```tsx
+// App.tsx - Setup Router
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import MyForm from './MyForm';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <div className="App">
+        <MyForm />
+      </div>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+
+// MyForm.tsx - Use the hook
+import React, { useState } from 'react';
+import { useNavigationGuard } from '@mehmetbarisyaman/react-navigation-guard';
+
+function MyForm() {
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  
+  const { allowPendingNavigation, cancelPendingNavigation } = useNavigationGuard({
+    shouldBlock: () => hasUnsavedChanges,
+    onNavigationAttempt: () => {
+      if (window.confirm('You have unsaved changes. Leave anyway?')) {
+        allowPendingNavigation();
+      } else {
+        cancelPendingNavigation();
+      }
+    }
+  });
+  
+  return (
+    <div>
+      <input onChange={(e) => setHasUnsavedChanges(e.target.value !== '')} />
+      <button onClick={() => setHasUnsavedChanges(false)}>Save</button>
+    </div>
+  );
+}
+
+export default MyForm;
 ```
 
 ## Prerequisites
 
 This package requires:
-- React 16.8.0 or higher (for hooks support) - **✅ React 19 compatible**
-- react-router-dom 6.0.0 or higher
+- **React 16.8.0 or higher** (for hooks support) - **✅ React 19 compatible**
+- **react-router-dom 6.0.0 or higher** - **⚠️ REQUIRED: Your component must be wrapped in a Router component**
+
+> **Important:** This hook uses `useNavigate` from react-router-dom, so your component must be inside a `<Router>`, `<BrowserRouter>`, or `<HashRouter>` component.
 
 ## Basic Usage
 
 ```tsx
+// App.tsx - Root component with Router setup
+import React from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import MyForm from './MyForm';
+import OtherPage from './OtherPage';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <nav>
+        <Link to="/">Form</Link> | <Link to="/other">Other Page</Link>
+      </nav>
+      <Routes>
+        <Route path="/" element={<MyForm />} />
+        <Route path="/other" element={<OtherPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
+export default App;
+
+// MyForm.tsx - Component using the navigation guard
 import React, { useState } from 'react';
-import { useNavigationGuard } from 'react-navigation-guard';
+import { useNavigationGuard } from '@mehmetbarisyaman/react-navigation-guard';
 
 function MyForm() {
   const [formData, setFormData] = useState('');
@@ -72,23 +151,51 @@ function MyForm() {
 
   return (
     <div>
+      <h2>Protected Form</h2>
       <textarea
         value={formData}
         onChange={(e) => setFormData(e.target.value)}
         placeholder="Enter some data..."
+        rows={4}
+        cols={50}
       />
-      <button onClick={handleSave}>Save</button>
+      <br />
+      <button onClick={handleSave} disabled={!hasUnsavedChanges}>
+        Save
+      </button>
+      {hasUnsavedChanges && (
+        <p style={{color: 'orange'}}>⚠️ You have unsaved changes!</p>
+      )}
       
       {showModal && (
-        <div className="modal">
-          <p>You have unsaved changes. Are you sure you want to leave?</p>
-          <button onClick={handleConfirmLeave}>Leave</button>
-          <button onClick={handleCancelLeave}>Stay</button>
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          <div style={{
+            background: 'white',
+            padding: '20px',
+            borderRadius: '8px',
+            boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+          }}>
+            <p>You have unsaved changes. Are you sure you want to leave?</p>
+            <button onClick={handleConfirmLeave}>Leave</button>
+            <button onClick={handleCancelLeave} style={{marginLeft: '10px'}}>Stay</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
+
+export default MyForm;
 ```
 
 ## Advanced Usage
@@ -98,7 +205,7 @@ function MyForm() {
 For cases where you need to control navigation from outside the component:
 
 ```tsx
-import { guardedNavigateGlobal } from 'react-navigation-guard';
+import { guardedNavigateGlobal } from '@mehmetbarisyaman/react-navigation-guard';
 import { useNavigate } from 'react-router-dom';
 
 function SomeComponent() {
@@ -116,7 +223,7 @@ function SomeComponent() {
 ### Custom Modal Implementation
 
 ```tsx
-import { useNavigationGuard } from 'react-navigation-guard';
+import { useNavigationGuard } from '@mehmetbarisyaman/react-navigation-guard';
 
 function FormWithCustomModal() {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -238,7 +345,7 @@ This package is written in TypeScript and includes complete type definitions. Al
 import type { 
   NavigationGuardOptions, 
   NavigationGuardReturn 
-} from 'react-navigation-guard';
+} from '@mehmetbarisyaman/react-navigation-guard';
 ```
 
 ## Compatibility
@@ -254,6 +361,54 @@ import type {
 2. **Handle all navigation types**: Remember to handle both route changes and page reloads in your modal
 3. **Provide clear messaging**: Let users know what they'll lose if they navigate away
 4. **Test thoroughly**: Test with different navigation methods (back button, direct URL entry, external links)
+
+## Troubleshooting
+
+### Error: "useNavigate() may be used only in the context of a <Router> component"
+
+This error occurs when your component using `useNavigationGuard` is not wrapped in a Router component. 
+
+**Solution:** Wrap your app in a Router:
+
+```tsx
+// ❌ Wrong - No Router wrapper
+import MyForm from './MyForm';
+
+function App() {
+  return <MyForm />; // This will cause the error
+}
+
+// ✅ Correct - Wrapped in Router
+import { BrowserRouter } from 'react-router-dom';
+import MyForm from './MyForm';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <MyForm />
+    </BrowserRouter>
+  );
+}
+```
+
+### Router Options
+
+Choose the appropriate router for your app:
+
+- **`<BrowserRouter>`** - For web apps with server-side routing support
+- **`<HashRouter>`** - For static file hosting or when you can't configure server
+- **`<MemoryRouter>`** - For testing or non-browser environments
+
+```tsx
+// For most web applications
+import { BrowserRouter } from 'react-router-dom';
+
+// For static hosting (GitHub Pages, etc.)
+import { HashRouter } from 'react-router-dom';
+
+// For testing
+import { MemoryRouter } from 'react-router-dom';
+```
 
 ## License
 

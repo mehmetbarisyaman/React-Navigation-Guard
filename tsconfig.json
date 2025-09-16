@@ -17,6 +17,8 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
+    "inlineSourceMap": false,
+    "inlineSources": true,
     "outDir": "./dist",
     "rootDir": "./src"
   },
