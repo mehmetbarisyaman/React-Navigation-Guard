@@ -1,6 +1,6 @@
 {
   "name": "@mehmetbarisyaman/react-navigation-guard",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A React hook for preventing navigation when there are unsaved changes, with support for browser refresh and route changes. Compatible with React 19. Requires React Router.",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -28,7 +28,14 @@
     "react-router",
     "typescript"
   ],
-  "author": "Mehmet Baris Yaman",
+  "author": {
+    "name": "Mehmet Baris Yaman",
+    "url": "https://www.linkedin.com/in/mehmetbarisyaman/",
+    "social": {
+      "linkedin": "https://www.linkedin.com/in/mehmetbarisyaman/",
+      "twitter": "https://x.com/mbarisyaman"
+    }
+  },
   "license": "MIT",
   "repository": {
     "type": "git",

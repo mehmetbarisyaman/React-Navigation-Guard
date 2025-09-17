@@ -410,6 +410,17 @@ import { HashRouter } from 'react-router-dom';
 import { MemoryRouter } from 'react-router-dom';
 ```
 
+## Author
+
+Created by **Mehmet Baris Yaman**
+
+Connect with me:
+- 💼 **LinkedIn**: [mehmetbarisyaman](https://www.linkedin.com/in/mehmetbarisyaman/)
+- 🐦 **X (Twitter)**: [@mbarisyaman](https://x.com/mbarisyaman)
+- 🐙 **GitHub**: [mehmetbarisyaman](https://github.com/mehmetbarisyaman)
+
+If this package helped you, feel free to follow me for more React utilities and web development content!
+
 ## License
 
 MIT
